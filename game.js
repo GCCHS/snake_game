@@ -16,6 +16,8 @@
 
 var canvasBg = document.getElementById("canvasBg");
 var ctxBg = canvasBg.getContext("2d");
+var canvasHeight = canvasBg.height;
+var canvasWidth = canvasBg.width;
 
 var requestAnimFrame = window.requestAnimationFrame
   || window.webkitRequestAnimationFrame
@@ -34,21 +36,16 @@ function init(){
   requestAnimFrame(loop);
   ctxBg.drawImage(
     bgImage,
-    0,
-    0,
-    canvasWidth,
-    canvasHeight,
-    0,
-    0,
-    canvasWidth,
-    canvasHeight
+    0, 0,
+    2000, 2000,
+    0, 0,
+    canvasWidth, canvasHeight
   );
 }
 
 function loop() {
   //update();
   //draw();
-  console.log("Looping");
   requestAnimFrame(loop);
 }
 
