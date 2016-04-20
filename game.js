@@ -1,6 +1,6 @@
 /*
   Entities:
-    - Player(Snake)
+    * Player(Snake)
     - Score Items(Person?)
   Constraints:
     - User is bound to the border of the canvas
@@ -18,6 +18,7 @@ var canvasBg = document.getElementById("canvasBg");
 var ctxBg = canvasBg.getContext("2d");
 var canvasHeight = canvasBg.height;
 var canvasWidth = canvasBg.width;
+var player1 = new Player();
 
 var requestAnimFrame = window.requestAnimationFrame
   || window.webkitRequestAnimationFrame
@@ -45,14 +46,37 @@ function init(){
 
 function loop() {
   //update();
-  //draw();
+  draw();
   requestAnimFrame(loop);
 }
 
+function draw() {
+  player1.draw();
+}
 
+function Player() {
+  this.srcX = 0;
+  this.srcY = 0;
+  this.srcHeight = 32;
+  this.srcWidth = 32;
 
+  this.srcFile = 'images/pink_snake_tongue_pixel.png';
+  this.srcImage = new Image();
+  this.srcImage.src = this.srcFile;
 
+  this.drawX = 100;
+  this.drawY = 100;
+  this.drawWidth = this.srcWidth;
+  this.drawHeight = this.srcHeight;
+}
 
-
-
+Player.prototype.draw = function() {
+  ctxBg.drawImage(
+    this.srcImage,
+    this.srcX, this.srcY,
+    this.srcWidth, this.srcHeight,
+    this.drawX, this.drawY,
+    this.drawWidth, this.drawHeight
+  );
+}
 
