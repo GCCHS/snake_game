@@ -16,6 +16,8 @@
 
 var canvasBg = document.getElementById("canvasBg");
 var ctxBg = canvasBg.getContext("2d");
+var canvasEntities = document.getElementById("canvasEntities");
+var ctxEntities = canvasEntities.getContext("2d");
 var canvasHeight = canvasBg.height;
 var canvasWidth = canvasBg.width;
 var player1 = new Player();
@@ -45,13 +47,22 @@ function init(){
 }
 
 function loop() {
-  //update();
+  clearCtx(ctxEntities);
+  update();
   draw();
   requestAnimFrame(loop);
 }
 
+function clearCtx(ctx){
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+}
+
 function draw() {
   player1.draw();
+}
+
+function update() {
+  player1.update();
 }
 
 function Player() {
@@ -71,12 +82,17 @@ function Player() {
 }
 
 Player.prototype.draw = function() {
-  ctxBg.drawImage(
+  ctxEntities.drawImage(
     this.srcImage,
     this.srcX, this.srcY,
     this.srcWidth, this.srcHeight,
     this.drawX, this.drawY,
     this.drawWidth, this.drawHeight
   );
+}
+
+Player.prototype.update = function() {
+  this.drawX += 5;
+  //this.drawY -= 1;
 }
 
