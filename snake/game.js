@@ -47,7 +47,6 @@ function init(){ //begin function
 }
 
 function loop() { //goes back and continuously does actions 
-  console.log( outOfBounds(player1) );
   clearCtx(ctxEntities)//calls function clearCtx on the ctxEntities canvas 
   update(); //calls function update ()
   draw(); //calls function draw()
@@ -83,17 +82,12 @@ function Player() { //Funtions set variables
   this.srcImage = new Image(); //knows where to find image
   this.srcImage.src = this.srcFile; //data fed to SrcImage
 
-//Drawing Variables
+//Drawing Varibales
   this.drawX = 100;
   this.drawY = 100;
   this.drawHeight = this.srcHeight; 
   this.drawWidth = this.srcWidth;
-  
-  // r = right
-  // l = left
-  // u = up
-  // d = down
-  this.direction = 'r';
+
 }
 
 Player.prototype.draw = function() { //the word protoype make a variable do something
@@ -107,44 +101,66 @@ Player.prototype.draw = function() { //the word protoype make a variable do some
 }
 
 Player.prototype.update = function() { //updates the draw function to move player1
-  // !outOfBounds(player1)         => true
-  // outOfBounds(player1) == false => true
-  var speed = 0;
-  if(this.direction == 'r'){
-    speed = 20;
-  }else if(this.direction == 'l'){
-    speed = -20;
-  }
-  if(outOfBounds(player1) == false){
-    this.drawX += speed; //this += makes it add one more to its drawing variables 
-  }
+  this.drawY += 2; //this += makes it add one more to its drawing variables 
+  this.checkDirection();
 }
 
 Player.prototype.checkDirection = function () {
-  var newDrawX = this.drawX;
-  var newDrawY = this.drawY;
-};
+  var newDrawX = this.drawX,
+      newDrawY = this.drawY,
+  obstacleCollision = false;
 
-function outOfBounds(entity) {
-    var newRightX = entity.drawX + entity.drawWidth;
-    var newLeftX = entity.drawX;
-    var LineTop = 10;
-    var LineRight = canvasWidth - 10;
-    var LineLeft = 10;
-    return outOfLowerBounds(entity) ||
-        outOfUpperBounds(entity) ||
+  obstacleCollision = this.checkObstacleCollide(newDrawX, newDrawY);
+
+   if (!obstacleCollision && !outOfBounds(this, newDrawX, newDrawY)) {
+        this.drawX = newDrawX;
+        this.drawY = newDrawY;
+    }
+}; 
+
+function Obstacle(x, y, w, h) {
+    this.drawX = x;
+    this.drawY = y;
+    this.srcWidth = w;
+    this.srcHeight = h;
+    this.leftX = this.drawX;
+    this.rightX = this.drawX + this.srcWidth;
+    this.topY = this.drawY;
+    this.bottomY = this.drawY + this.srcHeight;
+}
+
+Player.prototype.checkObstacleCollide = function (newDrawX, newDrawY) {
+  var newCenterX = newDrawX + (this.dWidth / 2),
+      newCenterY = newDrawY + (this.dHeight / 2);
+}
+
+function outOfBounds(a, x, y) {
+    var newBottomY = y + a.srcHeight,
+        newTopY = y,
+        newRightX = x + a.srcWidth,
+        newLeftX = x,
+        LineTop = 5,
+        LineBottom = 590,
+        LineRight = 780,
+        LineLeft = 65;
+    return newBottomY > LineBottom ||
+        newTopY < LineTop ||
         newRightX > LineRight ||
         newLeftX < LineLeft;
 }
 
-function outOfLowerBounds(entity) {
-  var newBottomY = entity.drawY + entity.drawHeight;
-  var LineBottom = canvasHeight - 10;
-  return newBottomY > LineBottom;
+function collision(a, b) {
+    return a.drawX <= b.drawX + b.width &&
+        a.drawX >= b.drawX &&
+        a.drawY <= b.drawY + b.height &&
+        a.drawY >= b.drawY;
 }
 
-function outOfUpperBounds(entity) {
-  var newTopY = entity.drawY;
-  var LineTop = 10;
-  return newTopY < LineTop;
-}
+
+
+
+
+
+
+
+
