@@ -3,7 +3,7 @@
     * Player(Snake)
     - Score Items(Person?)
   Constraints:
-    - User is bound to the border of the canvas
+    * User is bound to the border of the canvas
     - User can pick up a score item
       - When User picks up score items they grow in length
       - When score item is picked up up a new one is randomly placed
@@ -47,7 +47,7 @@ function init(){ //begin function
 }
 
 function loop() { //goes back and continuously does actions 
-  console.log( outOfBounds(player1) );
+  //console.log( outOfBounds(player1) );
   clearCtx(ctxEntities)//calls function clearCtx on the ctxEntities canvas 
   update(); //calls function update ()
   draw(); //calls function draw()
@@ -115,8 +115,17 @@ Player.prototype.update = function() { //updates the draw function to move playe
   }else if(this.direction == 'l'){
     speed = -20;
   }
+
+  if(outOfRightBounds(player1) == true){
+    this.direction = 'l';
+  }else if(outOfLeftBounds(player1) == true){
+    this.direction = 'r';
+  }
+
   if(outOfBounds(player1) == false){
     this.drawX += speed; //this += makes it add one more to its drawing variables 
+  }else{
+    this.drawX -= speed;
   }
 }
 
@@ -126,25 +135,32 @@ Player.prototype.checkDirection = function () {
 };
 
 function outOfBounds(entity) {
-    var newRightX = entity.drawX + entity.drawWidth;
-    var newLeftX = entity.drawX;
-    var LineTop = 10;
-    var LineRight = canvasWidth - 10;
-    var LineLeft = 10;
-    return outOfLowerBounds(entity) ||
-        outOfUpperBounds(entity) ||
-        newRightX > LineRight ||
-        newLeftX < LineLeft;
+  return outOfLowerBounds(entity) ||
+      outOfUpperBounds(entity) ||
+      outOfRightBounds(entity) ||
+      outOfLeftBounds(entity);
 }
 
-function outOfLowerBounds(entity) {
-  var newBottomY = entity.drawY + entity.drawHeight;
-  var LineBottom = canvasHeight - 10;
-  return newBottomY > LineBottom;
+function outOfLeftBounds(entity){
+  var newLeftX = entity.drawX;
+  var LineLeft = 10;
+  return newLeftX < LineLeft;
 }
 
 function outOfUpperBounds(entity) {
   var newTopY = entity.drawY;
   var LineTop = 10;
   return newTopY < LineTop;
+}
+
+function outOfRightBounds(entity){
+  var newRightX = entity.drawX + entity.drawWidth;
+  var LineRight = canvasWidth - 10;
+  return newRightX > LineRight
+}
+
+function outOfLowerBounds(entity) {
+  var newBottomY = entity.drawY + entity.drawHeight;
+  var LineBottom = canvasHeight - 10;
+  return newBottomY > LineBottom;
 }
