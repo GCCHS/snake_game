@@ -93,7 +93,8 @@ function Player() { //Funtions set variables
   // l = left
   // u = up
   // d = down
-  this.direction = 'r';
+  this.directionHorizontal = 'r';
+  this.directionVertical = 'd';
 }
 
 Player.prototype.draw = function() { //the word protoype make a variable do something
@@ -109,23 +110,43 @@ Player.prototype.draw = function() { //the word protoype make a variable do some
 Player.prototype.update = function() { //updates the draw function to move player1
   // !outOfBounds(player1)         => true
   // outOfBounds(player1) == false => true
-  var speed = 0;
-  if(this.direction == 'r'){
-    speed = 20;
-  }else if(this.direction == 'l'){
-    speed = -20;
+  var speedX = 0;
+  var speedY = 0;
+
+  if(this.directionHorizontal == 'r'){
+    speedX = 20;
+  }else if(this.directionHorizontal == 'l'){
+    speedX = -20;
+  }
+
+  if(this.directionVertical == 'u'){
+    speedY = -20;
+  }else if(this.directionVertical == 'd'){
+    speedY = 20;
   }
 
   if(outOfRightBounds(player1) == true){
-    this.direction = 'l';
+    this.directionHorizontal = 'l';
   }else if(outOfLeftBounds(player1) == true){
-    this.direction = 'r';
+    this.directionHorizontal = 'r';
   }
 
-  if(outOfBounds(player1) == false){
-    this.drawX += speed; //this += makes it add one more to its drawing variables 
+  if(outOfUpperBounds(player1) == true){
+    this.directionVertical = 'd';
+  }else if(outOfLowerBounds(player1) == true){
+    this.directionVertical = 'u';
+  }
+
+  if(!outOfUpperBounds(player1) && !outOfLowerBounds(player1)){
+    this.drawY += speedY; 
   }else{
-    this.drawX -= speed;
+    this.drawY -= speedY;
+  }
+
+  if(!outOfLeftBounds(player1) && !outOfRightBounds(player1)){
+    this.drawX += speedX;
+  }else{
+    this.drawX -= speedX;
   }
 }
 
