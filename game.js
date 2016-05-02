@@ -35,6 +35,36 @@ var bgImage = new Image(); //function on getting a new image
 bgImage.src = "images/back_cave.png"; //source of the background picture
 bgImage.addEventListener("load", init, false); //load then begin our game 
 
+function keyUp(event){
+  checkKey(event, false);
+}
+
+function keyDown(event){
+  checkKey(event, true)
+}
+
+function checkKey(event, value){
+  var keyCode = event.keyCode;
+  /*
+    Up = 87
+    Down = 83
+    Left = 65
+    Right = 68
+  */
+  if(keyCode == 87){
+    player1.directionVertical = 'u';
+  }else if(keyCode == 83){
+    player1.directionVertical = 'd';
+  }else if(keyCode == 68){
+    player1.directionHorizontal = 'r';
+  }else if(keyCode == 65){
+    player1.directionHorizontal = 'l';
+  }
+}
+
+window.addEventListener("keydown", keyDown, false);
+window.addEventListener("keyup", keyUp, false);
+
 function init(){ //begin function 
   requestAnimFrame(loop); //links Animation to the function loop
   ctxBg.drawImage( //
@@ -94,7 +124,7 @@ function Player() { //Funtions set variables
   // u = up
   // d = down
   this.directionHorizontal = 'r';
-  this.directionVertical = 'd';
+  this.directionVertical = 'u';
 }
 
 Player.prototype.draw = function() { //the word protoype make a variable do something
@@ -114,15 +144,15 @@ Player.prototype.update = function() { //updates the draw function to move playe
   var speedY = 0;
 
   if(this.directionHorizontal == 'r'){
-    speedX = 20;
+    speedX = 2;
   }else if(this.directionHorizontal == 'l'){
-    speedX = -20;
+    speedX = -2;
   }
 
   if(this.directionVertical == 'u'){
-    speedY = -20;
+    speedY = -2;
   }else if(this.directionVertical == 'd'){
-    speedY = 20;
+    speedY = 2;
   }
 
   if(outOfRightBounds(player1) == true){
