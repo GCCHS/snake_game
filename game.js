@@ -52,13 +52,13 @@ function checkKey(event, value){
     Right = 68
   */
   if(keyCode == 87){
-    player1.directionVertical = 'u';
+    player1.direction = 'u';
   }else if(keyCode == 83){
-    player1.directionVertical = 'd';
+    player1.direction = 'd';
   }else if(keyCode == 68){
-    player1.directionHorizontal = 'r';
+    player1.direction = 'r';
   }else if(keyCode == 65){
-    player1.directionHorizontal = 'l';
+    player1.direction = 'l';
   }
 }
 
@@ -123,8 +123,7 @@ function Player() { //Funtions set variables
   // l = left
   // u = up
   // d = down
-  this.directionHorizontal = 'r';
-  this.directionVertical = 'u';
+  this.direction = 'r';
 }
 
 Player.prototype.draw = function() { //the word protoype make a variable do something
@@ -140,43 +139,37 @@ Player.prototype.draw = function() { //the word protoype make a variable do some
 Player.prototype.update = function() { //updates the draw function to move player1
   // !outOfBounds(player1)         => true
   // outOfBounds(player1) == false => true
-  var speedX = 0;
-  var speedY = 0;
-
-  if(this.directionHorizontal == 'r'){
-    speedX = 2;
-  }else if(this.directionHorizontal == 'l'){
-    speedX = -2;
-  }
-
-  if(this.directionVertical == 'u'){
-    speedY = -2;
-  }else if(this.directionVertical == 'd'){
-    speedY = 2;
-  }
+  var speed = 2;
 
   if(outOfRightBounds(player1) == true){
-    this.directionHorizontal = 'l';
+    this.direction = 'l';
+    this.drawX -= speed;
   }else if(outOfLeftBounds(player1) == true){
-    this.directionHorizontal = 'r';
-  }
-
-  if(outOfUpperBounds(player1) == true){
-    this.directionVertical = 'd';
+    this.direction = 'r';
+    this.drawX += speed;
+  }else if(outOfUpperBounds(player1) == true){
+    this.direction = 'd';
+    this.drawY += speed;
   }else if(outOfLowerBounds(player1) == true){
-    this.directionVertical = 'u';
+    this.direction = 'u';
+    this.drawY -= speed;
   }
 
-  if(!outOfUpperBounds(player1) && !outOfLowerBounds(player1)){
-    this.drawY += speedY; 
-  }else{
-    this.drawY -= speedY;
+  if(!outOfBounds(player1)){
+    console.log(this.direction);
+    if(this.direction == 'u'){
+      this.drawY -= speed; // this.drawY = this.drawY - speed;
+    }else if(this.direction == 'l'){
+      this.drawX -= speed;
+    }else if(this.direction == 'd'){
+      this.drawY += speed;
+    }else if(this.direction == 'r'){
+      this.drawX += speed;
+    }
   }
 
-  if(!outOfLeftBounds(player1) && !outOfRightBounds(player1)){
-    this.drawX += speedX;
-  }else{
-    this.drawX -= speedX;
+  if(outOfBounds(player1)){
+
   }
 }
 
