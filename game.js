@@ -20,7 +20,12 @@ var canvasEntities = document.getElementById("canvasEntities"); //sets canvas to
 var ctxEntities = canvasEntities.getContext("2d"); //makes new canvas 2d
 var canvasHeight = canvasBg.height; //links function to variable 
 var canvasWidth = canvasBg.width; //links function to variable 
-var player1 = new Player(); //links funtion to a variable 
+var player1 = new Player(); //links funtion to a variable
+var players = [player1];
+for(var i = 0; i < 15; i++){
+  players.push(new Player());
+}
+console.log(players)
 
 var requestAnimFrame = window.requestAnimationFrame //Need for different types of browsers 
   || window.webkitRequestAnimationFrame
@@ -84,12 +89,27 @@ function loop() { //goes back and continuously does actions
   requestAnimFrame(loop);
 }
 
-function update() { //updates for new information 
-  player1.draw(); //updates the function draw()
+function update() { //updates for new information
+  console.log("start");
+  for(var i = 0; i < 15; i++){
+    console.log("before ", i, " ", players[i].drawX, " ", players[i].drawY)
+    follow(players[i], players[i+1]);
+    console.log("after ", i, " ", players[i].drawX, " ", players[i].drawY)
+    //players[i+1].update();
+  }
+  console.log("stop");
+  player1.update(); //links this to the prototype.update
 }
 
 function draw() {
-  player1.update(); //links this to the prototype.update
+  for(var i = 15; i >= 0; i--){
+    players[i].draw();
+  }
+}
+
+function follow(player, player2){
+  player2.drawX = player.drawX; 
+  player2.drawY = player.drawY;
 }
 
 function clearCtx (ctx){ //Clears old imformation
